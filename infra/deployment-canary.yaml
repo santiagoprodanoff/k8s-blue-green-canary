@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-canary
+  namespace: demo
+  labels:
+    app: webapp
+    color: canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+      color: canary
+  template:
+    metadata:
+      labels:
+        app: webapp
+        color: canary
+    spec:
+      containers:
+      - name: web
+        image: demo/webserver:latest
+        env:
+        - name: VERSION
+          value: "canary-1.0"
+        - name: COLOR
+          value: "yellow"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - containerPort: 80

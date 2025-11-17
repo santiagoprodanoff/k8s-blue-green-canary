@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress-canary
+  namespace: demo
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    # Deterministic test option: requests with X-Canary: true will always go to canary
+    nginx.ingress.kubernetes.io/canary-by-header: "X-Canary"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "true"
+    # Probabilistic / sampling option: nginx will sample this percentage of traffic when header/cookie is not present.
+    # Start at 0 and raise as you validate.
+    nginx.ingress.kubernetes.io/canary-weight: "0"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-canary-service
+            port:
+              number: 80
