@@ -1,0 +1,9 @@
+<!doctype html>
+<html>
+  <head><title>App - ${VERSION}</title></head>
+  <body>
+    <h1>App version: ${VERSION}</h1>
+    <p>Color: ${COLOR}</p>
+    <p>Pod IP: ${POD_IP}</p>
+  </body>
+</html>
